@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="favicon.ico">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="theme-color" content="#0B5D42">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>تسجيل الدخول | نظام الحضور والانصراف</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="login-wrap">
+  <div class="login-card">
+    <div class="login-logo" id="loginLogo">ب</div>
+    <h1 id="loginSchoolName">مدرسة بلعرب بن سلطان</h1>
+    <p class="sub-title" data-i18n="login_sub">نظام الحضور والانصراف الإلكتروني للطلاب</p>
+
+    <div class="role-toggle">
+      <button type="button" id="roleAdminBtn" class="active" data-i18n="role_admin">مدير</button>
+      <button type="button" id="roleTeacherBtn" data-i18n="role_teacher">معلم</button>
+      <button type="button" id="roleSupervisorBtn" data-i18n="role_supervisor">مشرف الغياب</button>
+    </div>
+
+    <form id="loginForm">
+      <div class="field">
+        <label data-i18n="username">اسم المستخدم</label>
+        <input type="text" id="username" required autocomplete="username">
+      </div>
+      <div class="field">
+        <label data-i18n="password">كلمة المرور</label>
+        <div class="password-wrap">
+          <input type="password" id="password" required autocomplete="current-password">
+          <button type="button" class="toggle-pass" id="togglePassBtn">👁</button>
+        </div>
+      </div>
+      <div id="loginError" class="inline-error" style="display:none"></div>
+      <button type="submit" class="btn btn-primary btn-block" data-i18n="login_btn" style="margin-top:.4rem">دخول</button>
+    </form>
+
+    <div class="login-foot">
+      <button type="button" id="loginLangBtn" class="btn btn-ghost btn-sm">EN / AR</button>
+    </div>
+  </div>
+</div>
+
+<script src="js/i18n.js"></script>
+<script src="js/utils.js"></script>
+<script src="js/db.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/ui.js"></script>
+<script>
+  (function(){
+    const s = DB.settings.get();
+    document.documentElement.setAttribute('data-theme', s.theme || 'light');
+    localStorage.setItem('bbs_lang', s.lang || 'ar');
+    applyLang();
+
+    document.getElementById('loginSchoolName').textContent = getLang()==='ar' ? s.schoolName : (s.schoolNameEn || s.schoolName);
+    if (s.logo) document.getElementById('loginLogo').innerHTML = '<img src="'+s.logo+'" style="width:100%;height:100%;object-fit:cover;border-radius:14px">';
+
+    // إن كانت هناك جلسة قائمة بالفعل، انتقل مباشرة للوحة التحكم
+    if (Auth.getSession()) window.location.href = 'dashboard.html';
+
+    let role = 'admin';
+    const adminBtn = document.getElementById('roleAdminBtn');
+    const teacherBtn = document.getElementById('roleTeacherBtn');
+    const supervisorBtn = document.getElementById('roleSupervisorBtn');
+    const roleButtons = [adminBtn, teacherBtn, supervisorBtn];
+    function selectRole(newRole, btn){
+      role = newRole;
+      roleButtons.forEach(b=>b.classList.toggle('active', b===btn));
+    }
+    adminBtn.addEventListener('click', ()=> selectRole('admin', adminBtn));
+    teacherBtn.addEventListener('click', ()=> selectRole('teacher', teacherBtn));
+    supervisorBtn.addEventListener('click', ()=> selectRole('supervisor', supervisorBtn));
+
+    bindPasswordToggle('password', '#togglePassBtn');
+
+    document.getElementById('loginLangBtn').addEventListener('click', ()=>{
+      setLang(getLang()==='ar' ? 'en' : 'ar');
+      document.getElementById('loginSchoolName').textContent = getLang()==='ar' ? s.schoolName : (s.schoolNameEn || s.schoolName);
+    });
+
+    document.getElementById('loginForm').addEventListener('submit', function(e){
+      e.preventDefault();
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value;
+      const errEl = document.getElementById('loginError');
+      errEl.style.display = 'none';
+      showLoading();
+      setTimeout(()=>{
+        hideLoading();
+        const result = Auth.login(username, password, role);
+        if (!result.ok){
+          errEl.textContent = result.error;
+          errEl.style.display = 'block';
+          return;
+        }
+        window.location.href = 'dashboard.html';
+      }, 350);
+    });
+  })();
+</script>
+<script src="js/pwa.js"></script>
+</body>
+</html>
