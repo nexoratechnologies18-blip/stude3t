@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="favicon.ico">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="theme-color" content="#0B5D42">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>الطلاب</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar" id="sidebar"></aside>
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+  <div class="main">
+    <header class="topbar" id="topbar"></header>
+    <main class="content">
+      <div class="page-head">
+        <div>
+          <h1 data-i18n="nav_students">الطلاب</h1>
+          <p class="sub" id="countLine"></p>
+        </div>
+        <div class="actions">
+          <button class="btn btn-primary" id="addStudentBtn" data-i18n="add_student" style="display:none">إضافة طالب</button>
+        </div>
+      </div>
+
+      <div class="filters-bar">
+        <div class="field">
+          <label data-i18n="search_student_ph">بحث</label>
+          <input type="search" id="searchInput" data-i18n-ph="search_student_ph">
+        </div>
+        <div class="field">
+          <label data-i18n="grade">الصف</label>
+          <select id="filterClass"><option value="" data-i18n="all">الكل</option></select>
+        </div>
+        <div class="field">
+          <label data-i18n="section">الشعبة</label>
+          <select id="filterSection"><option value="" data-i18n="all">الكل</option></select>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr>
+            <th data-i18n="student_name">الاسم</th>
+            <th data-i18n="student_id">الرقم</th>
+            <th data-i18n="grade">الصف</th>
+            <th data-i18n="section">الشعبة</th>
+            <th data-i18n="status">حالة اليوم</th>
+            <th data-i18n="last_attendance">آخر حضور</th>
+            <th data-i18n="actions">إجراءات</th>
+          </tr></thead>
+          <tbody id="studentsBody"></tbody>
+        </table>
+      </div>
+    </main>
+  </div>
+</div>
+
+<!-- Modal: إضافة/تعديل طالب -->
+<div class="modal-backdrop" id="studentModal">
+  <div class="modal">
+    <div class="modal-head">
+      <h3 id="studentModalTitle" data-i18n="add_student">إضافة طالب</h3>
+      <button class="modal-close" onclick="closeModal('studentModal')">&times;</button>
+    </div>
+    <div class="modal-body">
+      <form id="studentForm">
+        <input type="hidden" id="studentId">
+        <div class="form-row">
+          <div class="field">
+            <label data-i18n="student_name">اسم الطالب</label>
+            <input type="text" id="fName" required>
+          </div>
+          <div class="field">
+            <label data-i18n="student_id">رقم الطالب</label>
+            <input type="text" id="fNumber" required>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="field">
+            <label data-i18n="grade">الصف</label>
+            <select id="fClass" required></select>
+          </div>
+          <div class="field">
+            <label data-i18n="section">الشعبة</label>
+            <select id="fSection" required></select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="field">
+            <label data-i18n="civil_no">الرقم المدني (اختياري)</label>
+            <input type="text" id="fCivil">
+          </div>
+          <div class="field">
+            <label data-i18n="student_status">حالة الطالب</label>
+            <select id="fStatus">
+              <option value="active" data-i18n="status_active">نشط</option>
+              <option value="inactive" data-i18n="status_inactive">غير نشط</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="field">
+            <label data-i18n="guardian_name">اسم ولي الأمر</label>
+            <input type="text" id="fGuardianName" required>
+          </div>
+          <div class="field">
+            <label data-i18n="guardian_phone">رقم هاتف ولي الأمر</label>
+            <input type="tel" id="fGuardianPhone" required>
+          </div>
+        </div>
+        <div class="field">
+          <label data-i18n="photo_optional">صورة الطالب (اختياري)</label>
+          <input type="file" id="fPhoto" accept="image/*">
+          <img id="photoPreview" style="max-width:70px;border-radius:10px;margin-top:.5rem;display:none">
+        </div>
+
+        <hr class="divider">
+        <h4 style="margin-bottom:.6rem" data-i18n="exception_section_title">استثناء الطالب</h4>
+        <div class="checkbox-row" style="margin-bottom:.8rem">
+          <input type="checkbox" id="fExemptEnable">
+          <label for="fExemptEnable" style="margin:0" data-i18n="exception_enable">تفعيل استثناء لهذا الطالب</label>
+        </div>
+        <div id="exceptionFields" style="display:none">
+          <div class="field">
+            <label data-i18n="exception_reason">سبب الاستثناء</label>
+            <input type="text" id="fExemptReason">
+          </div>
+          <div class="field">
+            <label data-i18n="exception_periods">حصص مستثنى منها تحديداً (اتركها فارغة لتشمل كل الحصص)</label>
+            <div id="exemptPeriodCheckboxes" style="display:flex;flex-wrap:wrap;gap:.5rem;border:1px solid var(--border);border-radius:8px;padding:.6rem"></div>
+          </div>
+          <div class="checkbox-row" style="margin:.7rem 0">
+            <input type="checkbox" id="fExemptNotifications">
+            <label for="fExemptNotifications" style="margin:0" data-i18n="exception_notifications">استثناء من التنبيهات التلقائية والتحليلات</label>
+          </div>
+          <div class="form-row">
+            <div class="field"><label data-i18n="exception_from">من تاريخ (اختياري)</label><input type="date" id="fExemptFrom"></div>
+            <div class="field"><label data-i18n="exception_to">إلى تاريخ (اختياري)</label><input type="date" id="fExemptTo"></div>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-outline" data-i18n="cancel" onclick="closeModal('studentModal')">إلغاء</button>
+      <button class="btn btn-primary" id="saveStudentBtn" data-i18n="save">حفظ</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: الملف الشخصي للطالب -->
+<div class="modal-backdrop" id="profileModal">
+  <div class="modal modal-lg">
+    <div class="modal-head">
+      <h3 data-i18n="profile_title">الملف الشخصي للطالب</h3>
+      <button class="modal-close" onclick="closeModal('profileModal')">&times;</button>
+    </div>
+    <div class="modal-body" id="profileBody"></div>
+    <div class="modal-foot">
+      <button class="btn btn-outline" data-i18n="close" onclick="closeModal('profileModal')">إغلاق</button>
+    </div>
+  </div>
+</div>
+
+<script src="js/i18n.js"></script>
+<script src="js/utils.js"></script>
+<script src="js/db.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/layout.js"></script>
+<script src="js/exceptions.js"></script>
+<script src="js/profile.js"></script>
+<script src="js/students.js"></script>
+<script src="js/pwa.js"></script>
+</body>
+</html>

@@ -1,0 +1,19 @@
+{
+  "name": "نظام الحضور والانصراف - مدرسة بلعرب بن سلطان",
+  "short_name": "حضور بلعرب",
+  "description": "نظام الحضور والانصراف الإلكتروني لطلاب مدرسة بلعرب بن سلطان",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#F6F4EF",
+  "theme_color": "#0B5D42",
+  "dir": "rtl",
+  "lang": "ar",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-maskable-192.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable" },
+    { "src": "icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

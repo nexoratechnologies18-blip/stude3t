@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="favicon.ico">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="theme-color" content="#0B5D42">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>حضور الحصص</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar" id="sidebar"></aside>
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+  <div class="main">
+    <header class="topbar" id="topbar"></header>
+    <main class="content">
+      <div class="page-head">
+        <div>
+          <h1 data-i18n="period_attendance_title">تسجيل حضور الحصص</h1>
+          <p class="sub text-dim" data-i18n="period_attendance_note" style="max-width:640px"></p>
+        </div>
+        <div class="actions">
+          <button class="btn btn-accent" id="markAllBtn" data-i18n="mark_all_present">تسجيل حضور الجميع</button>
+          <button class="btn btn-primary" id="saveAttendanceBtn" data-i18n="save_attendance">حفظ الحضور</button>
+        </div>
+      </div>
+
+      <div class="filters-bar">
+        <div class="field"><label data-i18n="select_class">اختر الصف</label><select id="filterClass"></select></div>
+        <div class="field"><label data-i18n="select_section">اختر الشعبة</label><select id="filterSection"></select></div>
+        <div class="field"><label data-i18n="select_period">اختر الحصة</label><select id="filterPeriod"></select></div>
+        <div class="field"><label data-i18n="select_date">اختر التاريخ</label><input type="date" id="filterDate"></div>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr>
+            <th data-i18n="student_name">الاسم</th>
+            <th data-i18n="student_id">الرقم</th>
+            <th data-i18n="status">الحالة</th>
+            <th data-i18n="notes">ملاحظات</th>
+            <th data-i18n="actions">إجراءات</th>
+          </tr></thead>
+          <tbody id="attendanceBody"></tbody>
+        </table>
+      </div>
+    </main>
+  </div>
+</div>
+
+<script src="js/i18n.js"></script>
+<script src="js/utils.js"></script>
+<script src="js/db.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/layout.js"></script>
+<script src="js/notify.js"></script>
+<script src="js/exceptions.js"></script>
+<script src="js/period-attendance.js"></script>
+<script src="js/pwa.js"></script>
+</body>
+</html>

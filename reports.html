@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="favicon.ico">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="theme-color" content="#0B5D42">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>التقارير</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar" id="sidebar"></aside>
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+  <div class="main">
+    <header class="topbar" id="topbar"></header>
+    <main class="content">
+      <div class="page-head">
+        <div><h1 data-i18n="reports_title">التقارير</h1></div>
+        <div class="actions">
+          <button class="btn btn-outline" id="printBtn" data-i18n="print">طباعة</button>
+          <button class="btn btn-outline" id="csvBtn" data-i18n="export_csv">تصدير CSV</button>
+          <button class="btn btn-primary" id="pdfBtn" data-i18n="export_pdf">تصدير PDF</button>
+        </div>
+      </div>
+
+      <div class="no-print" style="display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:1rem">
+        <button class="btn btn-outline btn-sm" data-preset="daily" data-i18n="report_daily">تقرير يومي</button>
+        <button class="btn btn-outline btn-sm" data-preset="weekly" data-i18n="report_weekly">تقرير أسبوعي</button>
+        <button class="btn btn-outline btn-sm" data-preset="monthly" data-i18n="report_monthly">تقرير شهري</button>
+        <button class="btn btn-outline btn-sm" data-preset="absence" data-i18n="report_absence">تقرير الغياب</button>
+        <button class="btn btn-outline btn-sm" data-preset="late" data-i18n="report_late">تقرير التأخير</button>
+      </div>
+
+      <div class="filters-bar">
+        <div class="field"><label data-i18n="filter_from">من تاريخ</label><input type="date" id="fFrom"></div>
+        <div class="field"><label data-i18n="filter_to">إلى تاريخ</label><input type="date" id="fTo"></div>
+        <div class="field"><label data-i18n="grade">الصف</label><select id="fClass"><option value="" data-i18n="all">الكل</option></select></div>
+        <div class="field"><label data-i18n="section">الشعبة</label><select id="fSection"><option value="" data-i18n="all">الكل</option></select></div>
+        <div class="field"><label data-i18n="filter_status">الحالة</label>
+          <select id="fStatus">
+            <option value="" data-i18n="all">الكل</option>
+            <option value="present" data-i18n="present">حاضر</option>
+            <option value="absent" data-i18n="absent">غائب</option>
+            <option value="late" data-i18n="late">متأخر</option>
+            <option value="excused" data-i18n="excused">مستأذن</option>
+          </select>
+        </div>
+        <div class="field"><label data-i18n="search_student_ph">بحث</label><input type="search" id="fSearch" data-i18n-ph="search_student_ph"></div>
+      </div>
+
+      <div class="print-only" id="printHeader"></div>
+
+      <div class="card" style="margin-bottom:1rem" id="summaryCard"></div>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr>
+            <th data-i18n="filter_date">التاريخ</th>
+            <th data-i18n="student_name">الاسم</th>
+            <th data-i18n="grade">الصف</th>
+            <th data-i18n="section">الشعبة</th>
+            <th data-i18n="status">الحالة</th>
+            <th data-i18n="checkin_time">الوقت</th>
+            <th data-i18n="notes">ملاحظات</th>
+          </tr></thead>
+          <tbody id="reportBody"></tbody>
+        </table>
+      </div>
+    </main>
+  </div>
+</div>
+
+<script src="js/i18n.js"></script>
+<script src="js/utils.js"></script>
+<script src="js/db.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/layout.js"></script>
+<script src="js/reports.js"></script>
+<script src="js/pwa.js"></script>
+</body>
+</html>

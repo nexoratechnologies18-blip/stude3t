@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="favicon.ico">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="theme-color" content="#0B5D42">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>الإشعارات</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar" id="sidebar"></aside>
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+  <div class="main">
+    <header class="topbar" id="topbar"></header>
+    <main class="content">
+      <div class="page-head">
+        <div><h1 data-i18n="notifications_title">سجل الإشعارات</h1></div>
+        <div class="actions"><button class="btn btn-primary" id="newNotifyBtn" data-i18n="notify_guardian">إرسال إشعار لولي الأمر</button></div>
+      </div>
+
+      <p class="text-dim" data-i18n="notify_channel_note" style="margin-bottom:1rem"></p>
+
+      <div class="card" id="pendingCard" style="margin-bottom:1.2rem">
+        <h3 data-i18n="pending_notifications_title">الإشعارات المعلّقة</h3>
+        <p class="text-dim" data-i18n="pending_notifications_sub" style="margin-bottom:.8rem"></p>
+        <div id="pendingList"></div>
+      </div>
+
+      <h3 data-i18n="notifications_title" style="margin-bottom:.6rem">سجل الإشعارات</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr>
+            <th data-i18n="student_name">الطالب</th>
+            <th data-i18n="status">النوع</th>
+            <th data-i18n="default_channel">القناة</th>
+            <th data-i18n="notes">الرسالة</th>
+            <th data-i18n="filter_date">التاريخ</th>
+            <th data-i18n="actions">إجراءات</th>
+          </tr></thead>
+          <tbody id="notifBody"></tbody>
+        </table>
+      </div>
+    </main>
+  </div>
+</div>
+
+<div class="modal-backdrop" id="notifyModal">
+  <div class="modal" style="max-width:460px">
+    <div class="modal-head"><h3 data-i18n="notify_guardian">إرسال إشعار لولي الأمر</h3><button class="modal-close" onclick="closeModal('notifyModal')">&times;</button></div>
+    <div class="modal-body">
+      <div class="field">
+        <label data-i18n="search_student_ph">ابحث بالاسم أو الرقم</label>
+        <input type="search" id="notifySearch">
+      </div>
+      <div id="notifySearchResults" style="max-height:160px;overflow-y:auto;margin-bottom:.8rem"></div>
+      <div id="notifySelectedBox" class="text-dim" style="margin-bottom:.8rem"></div>
+      <div class="form-row">
+        <div class="field">
+          <label data-i18n="status">نوع الإشعار</label>
+          <select id="notifyType">
+            <option value="absent" data-i18n="absent">غائب</option>
+            <option value="late" data-i18n="late">متأخر</option>
+          </select>
+        </div>
+        <div class="field">
+          <label data-i18n="default_channel">القناة</label>
+          <select id="notifyChannelSelect">
+            <option value="whatsapp" data-i18n="channel_whatsapp">واتساب (Click to Chat)</option>
+            <option value="sms" data-i18n="channel_sms">رسالة نصية (SMS)</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-outline" data-i18n="cancel" onclick="closeModal('notifyModal')">إلغاء</button>
+      <button class="btn btn-primary" id="sendNotifyBtn" data-i18n="notify_guardian">إرسال</button>
+    </div>
+  </div>
+</div>
+
+<script src="js/i18n.js"></script>
+<script src="js/utils.js"></script>
+<script src="js/db.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/layout.js"></script>
+<script src="js/notify.js"></script>
+<script src="js/notifications.js"></script>
+<script src="js/pwa.js"></script>
+</body>
+</html>

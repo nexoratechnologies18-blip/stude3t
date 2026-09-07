@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="favicon.ico">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="theme-color" content="#0B5D42">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>الإدارة والإعدادات</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar" id="sidebar"></aside>
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+  <div class="main">
+    <header class="topbar" id="topbar"></header>
+    <main class="content">
+      <div class="page-head"><div><h1 data-i18n="admin_title">الإدارة والإعدادات</h1></div></div>
+
+      <div class="tabs">
+        <button class="tab-btn active" data-tab="settings" data-i18n="tab_settings">إعدادات النظام</button>
+        <button class="tab-btn" data-tab="teachers" data-i18n="tab_teachers">المعلمون</button>
+        <button class="tab-btn" data-tab="supervisors" data-i18n="tab_supervisors">مشرفو الغياب</button>
+        <button class="tab-btn" data-tab="integration" data-i18n="tab_integration">التكامل الخارجي</button>
+        <button class="tab-btn" data-tab="audit" data-i18n="tab_audit">سجل العمليات</button>
+        <button class="tab-btn" data-tab="backup" data-i18n="tab_backup">النسخ الاحتياطي</button>
+        <button class="tab-btn" data-tab="danger" data-i18n="tab_danger">منطقة الخطر</button>
+      </div>
+
+      <!-- إعدادات النظام -->
+      <div class="tab-panel active" id="tab-settings">
+        <div class="card" style="max-width:640px">
+          <div class="form-row">
+            <div class="field"><label data-i18n="settings_school_name">اسم المدرسة (عربي)</label><input type="text" id="stSchoolAr"></div>
+            <div class="field"><label>School Name (English)</label><input type="text" id="stSchoolEn"></div>
+          </div>
+          <div class="field">
+            <label data-i18n="settings_logo">شعار المدرسة</label>
+            <input type="file" id="stLogo" accept="image/*">
+            <img id="stLogoPreview" style="max-width:70px;border-radius:12px;margin-top:.5rem;display:none">
+          </div>
+          <div class="form-row">
+            <div class="field"><label data-i18n="settings_start">وقت بداية الدوام</label><input type="time" id="stStart"></div>
+            <div class="field"><label data-i18n="settings_end">وقت نهاية الدوام</label><input type="time" id="stEnd"></div>
+          </div>
+          <div class="checkbox-row" style="margin-bottom:1rem">
+            <input type="checkbox" id="stNotify">
+            <label for="stNotify" style="margin:0" data-i18n="settings_notifications">تفعيل الإشعارات</label>
+          </div>
+          <div class="form-row">
+            <div class="field">
+              <label data-i18n="country_code">رمز الدولة</label>
+              <input type="text" id="stCountryCode" placeholder="968" style="max-width:120px">
+            </div>
+            <div class="field">
+              <label data-i18n="default_channel">قناة الإرسال الافتراضية</label>
+              <select id="stChannel">
+                <option value="whatsapp" data-i18n="channel_whatsapp">واتساب (Click to Chat)</option>
+                <option value="sms" data-i18n="channel_sms">رسالة نصية (SMS)</option>
+              </select>
+            </div>
+          </div>
+          <p class="text-dim" data-i18n="notify_channel_note" style="font-size:.78rem;margin-top:-.4rem"></p>
+          <div class="checkbox-row" style="margin:.8rem 0">
+            <input type="checkbox" id="stAutoQueue">
+            <label for="stAutoQueue" style="margin:0" data-i18n="auto_queue_setting">إضافة الغياب/التأخير تلقائياً لقائمة الإشعارات المعلّقة</label>
+          </div>
+          <button class="btn btn-primary" id="saveSettingsBtn" data-i18n="save_settings" style="margin-top:.2rem">حفظ الإعدادات</button>
+          <hr class="divider">
+          <p class="text-dim" data-i18n="security_note" style="font-size:.78rem"></p>
+        </div>
+      </div>
+
+      <!-- المعلمون -->
+      <div class="tab-panel" id="tab-teachers">
+        <div class="page-head" style="margin-bottom:.7rem">
+          <div></div>
+          <button class="btn btn-primary" id="addTeacherBtn" data-i18n="add_teacher">إضافة معلم</button>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr>
+              <th data-i18n="teacher_name">الاسم</th>
+              <th data-i18n="username">اسم المستخدم</th>
+              <th data-i18n="assigned_classes">الصفوف/الشعب المسندة</th>
+              <th data-i18n="actions">إجراءات</th>
+            </tr></thead>
+            <tbody id="teachersBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- مشرفو الغياب -->
+      <div class="tab-panel" id="tab-supervisors">
+        <div class="page-head" style="margin-bottom:.7rem">
+          <div><p class="text-dim" data-i18n="permissions_note" style="margin:0"></p></div>
+          <button class="btn btn-primary" id="addSupervisorBtn" data-i18n="add_supervisor">إضافة مشرف</button>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr>
+              <th data-i18n="supervisor_name">اسم المشرف</th>
+              <th data-i18n="username">اسم المستخدم</th>
+              <th data-i18n="permissions_label">الصلاحيات الممنوحة</th>
+              <th data-i18n="actions">إجراءات</th>
+            </tr></thead>
+            <tbody id="supervisorsBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- التكامل الخارجي -->
+      <div class="tab-panel" id="tab-integration">
+        <div class="grid grid-2">
+          <div class="card">
+            <h3 data-i18n="external_integration_title">ربط نظام خارجي (بوابة تعليمية / SIS)</h3>
+            <p class="text-dim" data-i18n="external_integration_note" style="font-size:.8rem"></p>
+            <div class="checkbox-row" style="margin:.8rem 0">
+              <input type="checkbox" id="pwEnable">
+              <label for="pwEnable" style="margin:0" data-i18n="portal_webhook_enable">تفعيل الإرسال التلقائي عند تسجيل الغياب/التأخير</label>
+            </div>
+            <div class="field">
+              <label data-i18n="portal_webhook_url">رابط الاستقبال (Webhook URL)</label>
+              <input type="text" id="pwUrl" placeholder="https://example.com/api/attendance-webhook">
+            </div>
+            <div class="field">
+              <label data-i18n="portal_webhook_key">مفتاح API (اختياري)</label>
+              <input type="text" id="pwKey">
+            </div>
+            <div style="display:flex;gap:.5rem;flex-wrap:wrap">
+              <button class="btn btn-primary" id="savePortalBtn" data-i18n="save_settings">حفظ الإعدادات</button>
+              <button class="btn btn-outline" id="testPortalBtn" data-i18n="test_connection">اختبار الاتصال</button>
+            </div>
+          </div>
+          <div class="card">
+            <h3 data-i18n="sync_log_title">سجل محاولات المزامنة</h3>
+            <ul class="audit-list" id="portalSyncList"></ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- سجل العمليات -->
+      <div class="tab-panel" id="tab-audit">
+        <div class="card">
+          <ul class="audit-list" id="auditList"></ul>
+        </div>
+      </div>
+
+      <!-- النسخ الاحتياطي -->
+      <div class="tab-panel" id="tab-backup">
+        <div class="grid grid-2">
+          <div class="card">
+            <h3 data-i18n="tab_backup">النسخ الاحتياطي</h3>
+            <p data-i18n="backup_desc"></p>
+            <button class="btn btn-primary" id="downloadBackupBtn" data-i18n="download_backup">تنزيل نسخة احتياطية</button>
+          </div>
+          <div class="card">
+            <h3 data-i18n="restore_backup">استعادة من ملف</h3>
+            <p data-i18n="restore_desc"></p>
+            <input type="file" id="restoreFileInput" accept="application/json">
+            <button class="btn btn-outline" id="restoreBackupBtn" data-i18n="restore_backup" style="margin-top:.6rem">استعادة من ملف</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- منطقة الخطر -->
+      <div class="tab-panel" id="tab-danger">
+        <div class="card" style="max-width:520px;border-color:var(--c-absent)">
+          <h3 style="color:var(--c-absent)" data-i18n="tab_danger">منطقة الخطر</h3>
+          <p data-i18n="danger_desc"></p>
+          <button class="btn btn-danger" id="dangerBtn" data-i18n="danger_btn">حذف جميع البيانات</button>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<div class="modal-backdrop" id="teacherModal">
+  <div class="modal">
+    <div class="modal-head"><h3 data-i18n="add_teacher">إضافة معلم</h3><button class="modal-close" onclick="closeModal('teacherModal')">&times;</button></div>
+    <div class="modal-body">
+      <input type="hidden" id="teacherId">
+      <div class="form-row">
+        <div class="field"><label data-i18n="teacher_name">اسم المعلم</label><input type="text" id="tName"></div>
+        <div class="field"><label data-i18n="username">اسم المستخدم</label><input type="text" id="tUsername"></div>
+      </div>
+      <div class="field"><label data-i18n="password">كلمة المرور</label><input type="text" id="tPassword"></div>
+      <div class="field">
+        <label data-i18n="assigned_classes">الصفوف والشعب المسندة</label>
+        <div id="assignCheckboxes" style="max-height:220px;overflow-y:auto;border:1px solid var(--border);border-radius:8px;padding:.6rem"></div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-outline" data-i18n="cancel" onclick="closeModal('teacherModal')">إلغاء</button>
+      <button class="btn btn-primary" id="saveTeacherBtn" data-i18n="save">حفظ</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-backdrop" id="supervisorModal">
+  <div class="modal">
+    <div class="modal-head"><h3 id="supervisorModalTitle" data-i18n="add_supervisor">إضافة مشرف</h3><button class="modal-close" onclick="closeModal('supervisorModal')">&times;</button></div>
+    <div class="modal-body">
+      <input type="hidden" id="supId">
+      <div class="form-row">
+        <div class="field"><label data-i18n="supervisor_name">اسم المشرف</label><input type="text" id="supName"></div>
+        <div class="field"><label data-i18n="username">اسم المستخدم</label><input type="text" id="supUsername"></div>
+      </div>
+      <div class="field"><label data-i18n="password">كلمة المرور</label><input type="text" id="supPassword"></div>
+      <div class="field">
+        <label data-i18n="permissions_label">الصلاحيات الممنوحة</label>
+        <p class="text-dim" data-i18n="permissions_note" style="font-size:.76rem;margin-top:-.2rem"></p>
+        <div id="permissionCheckboxes" style="display:flex;flex-wrap:wrap;gap:.6rem;border:1px solid var(--border);border-radius:8px;padding:.7rem"></div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-outline" data-i18n="cancel" onclick="closeModal('supervisorModal')">إلغاء</button>
+      <button class="btn btn-primary" id="saveSupervisorBtn" data-i18n="save">حفظ</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-backdrop" id="dangerModal">
+  <div class="modal" style="max-width:420px">
+    <div class="modal-head"><h3 style="color:var(--c-absent)" data-i18n="tab_danger">منطقة الخطر</h3><button class="modal-close" onclick="closeModal('dangerModal')">&times;</button></div>
+    <div class="modal-body">
+      <p data-i18n="confirm_danger" style="color:var(--text)"></p>
+      <input type="text" id="dangerInput" placeholder="DELETE">
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-outline" data-i18n="cancel" onclick="closeModal('dangerModal')">إلغاء</button>
+      <button class="btn btn-danger" id="dangerConfirmBtn" data-i18n="danger_btn">حذف جميع البيانات</button>
+    </div>
+  </div>
+</div>
+
+<script src="js/i18n.js"></script>
+<script src="js/utils.js"></script>
+<script src="js/db.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/layout.js"></script>
+<script src="js/portal-sync.js"></script>
+<script src="js/admin.js"></script>
+<script src="js/pwa.js"></script>
+</body>
+</html>

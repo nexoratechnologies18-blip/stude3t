@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="favicon.ico">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="theme-color" content="#0B5D42">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>الانصراف</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar" id="sidebar"></aside>
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+  <div class="main">
+    <header class="topbar" id="topbar"></header>
+    <main class="content">
+      <div class="page-head"><div><h1 data-i18n="checkout_title">تسجيل الانصراف</h1></div></div>
+
+      <div class="grid grid-2">
+        <div class="card">
+          <div class="field">
+            <label data-i18n="search_by_id_or_name">ابحث برقم الطالب أو الاسم</label>
+            <input type="search" id="checkoutSearch" data-i18n-ph="search_by_id_or_name">
+          </div>
+          <div id="checkoutResults" class="table-wrap" style="max-height:420px;overflow-y:auto"></div>
+        </div>
+
+        <div class="card" id="checkoutDetailCard" style="display:none">
+          <div class="profile-head">
+            <div class="profile-avatar" id="coAvatar"></div>
+            <div>
+              <h3 id="coName" style="margin-bottom:.2rem"></h3>
+              <p id="coMeta" style="margin:0"></p>
+            </div>
+          </div>
+          <div class="profile-stats">
+            <div class="p-stat"><b id="coCheckin">—</b><span data-i18n="checkin_time">وقت الدخول</span></div>
+            <div class="p-stat"><b id="coCheckout">—</b><span data-i18n="checkout_time">وقت الخروج</span></div>
+            <div class="p-stat"><b id="coDuration">—</b><span data-i18n="duration_at_school">مدة البقاء</span></div>
+          </div>
+          <div id="coMessage" style="margin-bottom:.8rem"></div>
+          <button class="btn btn-primary btn-block" id="registerCheckoutBtn" data-i18n="register_checkout">تسجيل الانصراف</button>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<script src="js/i18n.js"></script>
+<script src="js/utils.js"></script>
+<script src="js/db.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/layout.js"></script>
+<script src="js/checkout.js"></script>
+<script src="js/pwa.js"></script>
+</body>
+</html>

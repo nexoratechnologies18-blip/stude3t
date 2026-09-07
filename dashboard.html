@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="favicon.ico">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="theme-color" content="#0B5D42">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>لوحة التحكم</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar" id="sidebar"></aside>
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+  <div class="main">
+    <header class="topbar" id="topbar"></header>
+    <main class="content">
+      <div class="page-head">
+        <div>
+          <h1 data-i18n="nav_dashboard">لوحة التحكم</h1>
+          <p class="sub" id="welcomeLine"></p>
+        </div>
+      </div>
+
+      <div id="pendingBanner"></div>
+
+      <div class="grid grid-stats" id="statsGrid"></div>
+
+      <div class="grid grid-2" style="margin-top:1rem">
+        <div class="card">
+          <h3 data-i18n="weekly_chart">الحضور خلال الأسبوع</h3>
+          <canvas id="weeklyChart" height="220"></canvas>
+        </div>
+        <div class="card">
+          <h3 data-i18n="absence_late_chart">الغياب والتأخير</h3>
+          <canvas id="absLateChart" height="220"></canvas>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:1rem">
+        <h3 data-i18n="recent_activity">آخر عمليات التسجيل</h3>
+        <div class="table-wrap">
+          <table>
+            <thead><tr>
+              <th data-i18n="student_name">الاسم</th>
+              <th data-i18n="grade">الصف</th>
+              <th data-i18n="section">الشعبة</th>
+              <th data-i18n="status">الحالة</th>
+              <th data-i18n="last_attendance">الوقت</th>
+            </tr></thead>
+            <tbody id="recentBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script src="js/i18n.js"></script>
+<script src="js/utils.js"></script>
+<script src="js/db.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/layout.js"></script>
+<script src="js/dashboard.js"></script>
+<script src="js/pwa.js"></script>
+</body>
+</html>
